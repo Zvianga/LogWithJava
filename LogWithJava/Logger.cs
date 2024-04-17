@@ -27,6 +27,10 @@ namespace LogWithJava
             Log(severity, message);
 #endif
         }
+        public static void DeprecatedLog(string message)
+        {
+            Console.WriteLine("I'm not here to log your message " + message);
+        }
         private static void Log(Severity severity, string message)
         {
             if (message == null || message.Length == 0) throw new Exception("Invalid logging message. Log cannot be empty.");
