@@ -56,27 +56,35 @@ namespace LogWithJava
         }
         private static void Log(Severity severity, string message)
         {
-            if (message == null || message.Length == 0) throw new Exception("Invalid logging message. Log cannot be empty.");
-            foreach (var sink in LoggedSinks)
+            try
             {
-                switch (sink)
+                if (message == null || message.Length == 0)
+                    throw new Exception("Invalid logging message. Log cannot be empty.");
+                foreach (var sink in LoggedSinks)
                 {
-                    case Sinks.Console:
-                        Console.WriteLine($"{DateTime.UtcNow} [{severity.ToString().ToUpper()}] {message}");
-                        break;
-                    case Sinks.File:
-                        string path = FilePaths[severity];
-                        if (!File.Exists(path))
-                            File.Create(path).Close();
-                        var file = File.AppendText(path);
-                        file.WriteLine($"{DateTime.UtcNow} [{severity.ToString().ToUpper()}] {message}");
-                        file.Close();
+                    switch (sink)
+                    {
+                        case Sinks.Console:
+                            Console.WriteLine($"{DateTime.UtcNow} [{severity.ToString().ToUpper()}] {message}");
+                            break;
+                        case Sinks.File:
+                            string path = FilePaths[severity];
+                            if (!File.Exists(path))
+                                File.Create(path).Close();
+                            var file = File.AppendText(path);
+                            file.WriteLine($"{DateTime.UtcNow} [{severity.ToString().ToUpper()}] {message}");
+                            file.Close();
 
-                        break;
-                    case Sinks.Debug:
-                        Debug.WriteLine($"{DateTime.UtcNow} [{severity.ToString().ToUpper()}] {message}");
-                        break;
+                            break;
+                        case Sinks.Debug:
+                            Debug.WriteLine($"{DateTime.UtcNow} [{severity.ToString().ToUpper()}] {message}");
+                            break;
+                    }
                 }
+            }
+            catch(Exception ex) 
+            {
+                LogWarning(ex.Message);
             }
         }
     }
