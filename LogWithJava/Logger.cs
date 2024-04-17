@@ -2,6 +2,10 @@
 
 namespace LogWithJava
 {
+
+    /// <summary>
+    /// Class <c>Logger</c> logs messages passed to it.
+    /// </summary>
     public static class Logger
     {
         public static HashSet<Sinks> LoggedSinks = new HashSet<Sinks>();
@@ -12,20 +16,43 @@ namespace LogWithJava
             FilePaths[Severity.Info] = "..//InfoLog.txt";
             FilePaths[Severity.Warning] = "..//WarningLog.txt";
         }
+
+        /// <summary>
+        /// Logs information
+        /// </summary>
+        /// <param name="message"></param>
         public static void LogInformation(string message)
         {
             Log(Severity.Info, message);
         }
 
+        /// <summary>
+        /// Logs warning
+        /// </summary>
+        /// <param name="message"></param>
         public static void LogWarning(string message)
         {
             Log(Severity.Warning, message);
         }
+
+        /// <summary>
+        /// Logs during debugging only
+        /// </summary>
+        /// <param name="message"></param>
         public static void LogDebug(string message, Severity severity = Severity.Info)
         {
 #if DEBUG
             Log(severity, message);
 #endif
+        }
+
+        /// <summary>
+        /// DEPRECATED
+        /// </summary>
+        /// <param name="message"></param>
+        public static void DeprecatedLog(string message)
+        {
+            Console.WriteLine("I'm not here to log your message " + message);
         }
         private static void Log(Severity severity, string message)
         {
